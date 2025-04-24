@@ -6,8 +6,8 @@ export default class linkedList {
     this.tail = null;
   }
 
-  append(value) {
-    let node = new Node(value);
+  append(key, value) {
+    let node = new Node(key, value);
 
     if (this.head === null) {
       // If the list is empty, the new node is both the head and the tail.
@@ -41,7 +41,7 @@ export default class linkedList {
   }
 
   heads() {
-    return console.log(this.head);
+    return this.head;
   }
   tails() {
     return console.log(this.tail);
@@ -70,8 +70,9 @@ export default class linkedList {
   contains(value) {
     let current = this.head;
     let index = 0;
-    while (this.size() > index) {
-      if (current.value === value) {
+    // this.size() > index, changed to while(current) as to check if there are nextNode within the node
+    while (current) {
+      if (current.value === value || current.key === value) {
         return true;
       }
       current = current.nextNode;
@@ -134,22 +135,29 @@ export default class linkedList {
 
   remove(index) {
     let current = this.head;
+
     let counter = 0;
-    let prev = "";
     if (index === 0) {
-      return this.prepend(value);
+      return (this.head = this.head.nextNode);
     }
+    let previous = 0;
 
-    while (counter < index) {
+    while (current && index > counter) {
+      previous = current;
       current = current.nextNode;
+      // // get the previous connected to current and change the nextNode value
 
-      // get the previous connected to current and change the nextNode value
-      if (counter === index - 2) {
-        prev = current;
-      }
       counter++;
     }
-    prev.nextNode = current.nextNode;
-    current = current.nextNode;
+    // if the current.nextNode is not null, assigned the previous currentNextNode
+    if (current.nextNode !== null) {
+      previous = current.nextNode;
+    } else {
+      previous.nextNode = null;
+    }
+
+    // console.log(prev);
+    // prev.nextNode = current.nextNode;
+    // current = current.nextNode;
   }
 }
